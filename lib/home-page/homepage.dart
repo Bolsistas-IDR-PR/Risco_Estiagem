@@ -47,6 +47,11 @@ class _HomePageState extends State<HomePage> {
                       border: InputBorder.none,
                       icon: Icon(Icons.saved_search),
                       hintText: 'Informe o nome')),
+              TextField(
+                  decoration: InputDecoration(
+                      border: InputBorder.none,
+                      icon: Icon(Icons.saved_search),
+                      hintText: 'Informe o nome')),
             ],
           ),
         ));
