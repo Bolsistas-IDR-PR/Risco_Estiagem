@@ -1,7 +1,10 @@
+import 'package:csv/csv.dart';
 import 'package:estiagem/views/chose_by_mesosphere.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -9,6 +12,7 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 }
+
 late GoogleMapController mapController;
 const LatLng _center = LatLng(-23.2927, -51.1732);
 
@@ -17,7 +21,23 @@ void _onMapCreated(GoogleMapController controller) {
 }
 
 class _HomePageState extends State<HomePage> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  List<List<dynamic>> _data = [];
+
+  @override
+  void initState() {
+    _loadCSV();
+    super.initState();
+  }
+
+  void _loadCSV() async {
+    final _rawData = await rootBundle.loadString("assets/db/riscoestiagem.csv");
+    List<List<dynamic>> _listaData = const CsvToListConverter().convert(_rawData);
+    setState(() {
+      _data = _listaData;
+    });
+  }
+
+  // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final TextEditingController _textEditingController = TextEditingController();
   // final Connectivity _connectivity = Connectivity();
@@ -28,11 +48,11 @@ class _HomePageState extends State<HomePage> {
   late String? titulo = 'Informe a cidade';
   late String idCidade;
   late List<String> listaCidades = [];
-  static late List<int> listaPosicao;
+  //static late List<int> listaPosicao;
   int pressed = 0;
   int? index;
   int? idx;
-  bool _isLoading = false;
+  // bool _isLoading = false;
   List<String> favoritos = [];
 
   // _lerListaFavoritos() async {
@@ -121,15 +141,19 @@ class _HomePageState extends State<HomePage> {
   // void _openEndDrawer() {
   //   _scaffoldKey.currentState!.openEndDrawer();
   // }
-
+  final List<int>? _riscoEstiagem = [];
+  String _cidade = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Risco Estiagem Paraná"),
-        centerTitle: true,
-        actions: [Image.asset('assets/assets_appBar/icon_idr_colored.png')],
-      ),
+      appBar: AppBar(title: const Text("Risco Estiagem Paraná"), centerTitle: true, actions: [
+        IconButton(
+          onPressed: () {
+            _loadCSV();
+          },
+          icon: Image.asset('assets/assets_appBar/icon_idr_colored.png'),
+        ),
+      ]),
       drawer: Drawer(
         child: ListView(
           children: [
@@ -139,89 +163,204 @@ class _HomePageState extends State<HomePage> {
                 fit: BoxFit.contain,
               ),
             ),
-             ListTile(title: const Text('Mesorregião'),
-            onTap: (){
-
-              Get.to(const Mesorregiao());
-            },)
+            ListTile(
+              title: const Text('Mesorregião'),
+              onTap: () {
+                Get.to(const Mesorregiao());
+              },
+            )
           ],
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15))),
-              width: MediaQuery.of(context).size.width,
-              height: 250,
-              child: const GoogleMap(
-                onMapCreated: _onMapCreated,
-                initialCameraPosition: CameraPosition(target: _center, zoom: 5.5),
-              ),
-            ),
-            Column(
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextField(
-                          onChanged: (text) {
-                           // String cidadeDigitadatoUpperCase =
-                           // ListaCidadesBrasilUppercase
-                              //  .formatarNomeUppercase(text);
-                           // listaPosicao = ListaCidadesBrasilUppercase
-                             //   .listarCidadesUpperCase(
-                             //   cidadeDigitadatoUpperCase);
-                            //print(listaPosicao);
-                           // for (int i = 0; i < listaPosicao.length; i++) {
-                              // print(ListaCidadesParana.listaCidadesParana
-                              //     .elementAt(listaPosicao[i]));
-                           // }
+      body: _data.isEmpty
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          :
 
-                           // listarCidades(listaPosicao);
-                          },
-                          keyboardType: TextInputType.text,
-                          textCapitalization: TextCapitalization.words,
-                          autocorrect: true,
-                          enableInteractiveSelection: true,
-                          showCursor: true,
-                          controller: _textEditingController,
-                          decoration: const InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.search,
-                            ),
-                            prefixIconColor: Color.fromRGBO(32, 61, 20, 1),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(8.0),
-                              ),
-                            ),
-                            hintText: 'Ex: Londrina',
-                            filled: true,
-                          ),
-                        ),
+          // ListView.builder(
+          //   itemCount: _data.length,
+          //   itemBuilder: (_, index) {
+          //     return Card(
+          //       margin: const EdgeInsets.all(3),
+          //       color: index == 0 ? Colors.amber : Colors.white,
+          //       child: ListTile(
+          //         leading: Text(_data[index][1].toString()),
+          //         title: Text(_data[index][2].toString()),
+          //         trailing: Text(_data[index][5].toString()),
+          //       ),
+          //     );
+          //   },
+          // ),
+
+          ListView(children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      decoration: const BoxDecoration(
+                          borderRadius:
+                              BorderRadius.only(bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15))),
+                      width: MediaQuery.of(context).size.width,
+                      height: 250,
+                      child: const GoogleMap(
+                        onMapCreated: _onMapCreated,
+                        initialCameraPosition: CameraPosition(target: _center, zoom: 5.5),
                       ),
                     ),
+                    Column(
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: TextField(
+
+                                  onSubmitted: (text) {
+                                    int cidade = int.parse(text);
+                                    double auxStringToDouble;
+                                    int auxDoubleToInt;
+                                    for (var element in _data) {
+                                      if (element[1] == cidade) {
+                                        auxStringToDouble = double.parse(element[5]);
+                                        assert(auxStringToDouble is double);
+                                        auxDoubleToInt = auxStringToDouble.toInt();
+                                        setState(
+                                          () {
+                                            _riscoEstiagem?.add(auxDoubleToInt);
+                                            _cidade = element[2];
+                                          },
+                                        );
+
+                                      }
+                                    }
+                                    _textEditingController.clear();
+                                  },
+                                  onChanged: (text) {
+                                    print(_textEditingController);
+                                    // String cidadeDigitadatoUpperCase =
+                                    // ListaCidadesBrasilUppercase
+                                    //  .formatarNomeUppercase(text);
+                                    // listaPosicao = ListaCidadesBrasilUppercase
+                                    //   .listarCidadesUpperCase(
+                                    //   cidadeDigitadatoUpperCase);
+                                    //print(listaPosicao);
+                                    // for (int i = 0; i < listaPosicao.length; i++) {
+                                    // print(ListaCidadesParana.listaCidadesParana
+                                    //     .elementAt(listaPosicao[i]));
+                                    // }
+
+                                    // listarCidades(listaPosicao);
+                                  },
+                                  keyboardType: TextInputType.text,
+                                  textCapitalization: TextCapitalization.words,
+                                  autocorrect: true,
+                                  enableInteractiveSelection: true,
+                                  showCursor: true,
+                                  controller: _textEditingController,
+                                  decoration: const InputDecoration(
+                                    prefixIcon: Icon(
+                                      Icons.search,
+                                    ),
+                                    prefixIconColor: Color.fromRGBO(32, 61, 20, 1),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(8.0),
+                                      ),
+                                    ),
+                                    hintText: 'Ex: Londrina',
+                                    filled: true,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        //   _textEditingController.text == ''
+                        // ? mostrarFavoritos()
+                        // : mostrarListaDigitando()
+                      ],
+                    ),
+                        SfCartesianChart(
+                            primaryXAxis: CategoryAxis(
+                                interval: 3,
+                                minorTicksPerInterval: 2,
+                                maximumLabels: 36,
+                                labelRotation: -90,
+                                title: AxisTitle(text: 'Decêndios')),
+                            title: ChartTitle(text: _cidade),
+                            legend: Legend(
+                              position: LegendPosition.bottom,
+                              isResponsive: true,
+                            ),
+                            series: <LineSeries<PlotRiscoEstiagem, String>>[
+                              LineSeries<PlotRiscoEstiagem, String>(
+                                  enableTooltip: true,
+                                  xAxisName: 'Decêndios',
+                                  yAxisName: '(%) Risco de Estiagem',
+                                  dataSource: <PlotRiscoEstiagem>[
+                                    PlotRiscoEstiagem('jan-1', 3),
+                                    PlotRiscoEstiagem('jan-2', 4),
+                                    PlotRiscoEstiagem('jan-1', _riscoEstiagem![0]),
+                                    PlotRiscoEstiagem('jan-2', _riscoEstiagem![1]),
+                                    PlotRiscoEstiagem('jan-3', _riscoEstiagem![2]),
+                                    PlotRiscoEstiagem('fev-1', _riscoEstiagem![3]),
+                                    PlotRiscoEstiagem('fev-2', _riscoEstiagem![4]),
+                                    PlotRiscoEstiagem('fev-3', _riscoEstiagem![5]),
+                                    PlotRiscoEstiagem('mar-1', _riscoEstiagem![6]),
+                                    PlotRiscoEstiagem('mar-2', _riscoEstiagem![7]),
+                                    PlotRiscoEstiagem('mar-3', _riscoEstiagem![8]),
+                                    PlotRiscoEstiagem('abr-1', _riscoEstiagem![9]),
+                                    PlotRiscoEstiagem('abr-2', _riscoEstiagem![10]),
+                                    PlotRiscoEstiagem('abr-3', _riscoEstiagem![11]),
+                                    PlotRiscoEstiagem('mai-1', _riscoEstiagem![12]),
+                                    PlotRiscoEstiagem('mai-2', _riscoEstiagem![13]),
+                                    PlotRiscoEstiagem('mai-3', _riscoEstiagem![14]),
+                                    PlotRiscoEstiagem('jun-1', _riscoEstiagem![15]),
+                                    PlotRiscoEstiagem('jun-2', _riscoEstiagem![16]),
+                                    PlotRiscoEstiagem('jun-3', _riscoEstiagem![17]),
+                                    PlotRiscoEstiagem('jul-1', _riscoEstiagem![18]),
+                                    PlotRiscoEstiagem('jul-2', _riscoEstiagem![19]),
+                                    PlotRiscoEstiagem('jul-3', _riscoEstiagem![20]),
+                                    PlotRiscoEstiagem('ago-1', _riscoEstiagem![21]),
+                                    PlotRiscoEstiagem('ago-2', _riscoEstiagem![22]),
+                                    PlotRiscoEstiagem('ago-3', _riscoEstiagem![23]),
+                                    PlotRiscoEstiagem('set-1', _riscoEstiagem![24]),
+                                    PlotRiscoEstiagem('set-2', _riscoEstiagem![25]),
+                                    PlotRiscoEstiagem('set-3', _riscoEstiagem![26]),
+                                    PlotRiscoEstiagem('out-1', _riscoEstiagem![27]),
+                                    PlotRiscoEstiagem('out-2', _riscoEstiagem![28]),
+                                    PlotRiscoEstiagem('out-3', _riscoEstiagem![29]),
+                                    PlotRiscoEstiagem('nov-1', _riscoEstiagem![30]),
+                                    PlotRiscoEstiagem('nov-2', _riscoEstiagem![31]),
+                                    PlotRiscoEstiagem('nov-3', _riscoEstiagem![32]),
+                                    PlotRiscoEstiagem('dez-1', _riscoEstiagem![33]),
+                                    PlotRiscoEstiagem('dez-2', _riscoEstiagem![34]),
+                                    PlotRiscoEstiagem('dez-2', _riscoEstiagem![35]),
+                                  ],
+                                  xValueMapper: (PlotRiscoEstiagem sales, _) => sales.decendio,
+                                  yValueMapper: (PlotRiscoEstiagem sales, _) => sales.risco as int,
+                                  dataLabelSettings: const DataLabelSettings(isVisible: true))
+                            ],
+                          )
+
                   ],
                 ),
-             //   _textEditingController.text == ''
-                   // ? mostrarFavoritos()
-                   // : mostrarListaDigitando()
-              ],
-            ),
-
-          ],
-        ),
-      ),
+              ),
+            ]),
     );
   }
+}
+
+class PlotRiscoEstiagem {
+  PlotRiscoEstiagem(this.decendio, this.risco);
+  final String decendio;
+  final int risco;
 }
 // class Previsao extends StatefulWidget {
 //   const Previsao({Key? key}) : super(key: key);
