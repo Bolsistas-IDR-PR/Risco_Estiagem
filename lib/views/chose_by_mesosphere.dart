@@ -13,7 +13,7 @@ class _MesorregiaoState extends State<Mesorregiao> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Seleção por Mesorregião'),
+        title: const Text('Seleção por Mesorregião'),
       ),
       body: Center(
         child: Image.asset('assets/assets_mesorregiao/mesorregiao.png'),
@@ -21,3 +21,4 @@ class _MesorregiaoState extends State<Mesorregiao> {
     );
   }
 }
+
