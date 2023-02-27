@@ -1,6 +1,9 @@
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_utils/get_utils.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -26,9 +29,7 @@ class _HomePageState extends State<HomePage> {
   late TrackballBehavior _trackballBehaviorMedia;
   @override
   void initState() {
-
-    // Future.delayed(const Duration(seconds: 2)).then((value) => _findLocal(2351035, 'Londrina-PR'));
-    _findLocal(2351035, 'Londrina-PR');
+    _loadCSV().then((value) => _findLocal(2351035, 'Londrina'));
     _trackballBehavior = TrackballBehavior(
         activationMode: ActivationMode.singleTap,
         enable: true,
@@ -52,15 +53,14 @@ class _HomePageState extends State<HomePage> {
     _textEditingController.dispose();
   }
 
-  Future<List<List>> _loadCSV() async {
+  Future _loadCSV() async {
     final rawData = await rootBundle.loadString("assets/db/riscoestiagem.csv");
     List<List<dynamic>> listaData = const CsvToListConverter().convert(rawData);
-    return listaData;
-    // setState(
-    //   () {
-    //     _data = listaData;
-    //   },
-    // );
+    setState(
+      () {
+        _data = listaData;
+      },
+    );
   }
 
   final TextEditingController _textEditingController = TextEditingController();
@@ -85,6 +85,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
+        toolbarHeight: 48,
         title: const Text("Risco Estiagem Paraná"),
         centerTitle: true,
         actions: [
@@ -102,37 +104,42 @@ class _HomePageState extends State<HomePage> {
             ),
             ListTile(
               title: const Text('Introdução'),
-              onTap: () {},
+              onTap: () {
+                Get.toNamed('/introducao');
+              },
             ),
             ListTile(
               title: const Text('Metodologia'),
-              onTap: () {},
+              onTap: () {
+                Get.toNamed('/metodologia');
+              },
             ),
             ListTile(
               title: const Text('Média Regional de Estiagem'),
-              onTap: () {},
+              onTap: () {
+                Get.toNamed('/media_regional');
+              },
             ),
             const Divider(),
-
             ListTile(
               title: const Text('Sobre'),
-              onTap: () {},
+              onTap: () {
+                Get.toNamed('/sobre');
+              },
             ),
             ListTile(
               title: const Text('Equipe Técnica'),
-              onTap: () {},
+              onTap: () {
+                Get.toNamed('/equipe_tecnica');
+              },
             ),
             const Divider(),
             ListTile(
               title: const Text('Ajuda'),
-              onTap: () {},
+              onTap: () {
+                Get.toNamed('/ajuda');
+              },
             ),
-            // ListTile(
-            //   title: const Text('Mesorregião'),
-            //   onTap: () {
-            //     Get.to(const Mesorregiao());
-            //   },
-            // ),
           ],
         ),
       ),
@@ -144,54 +151,56 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextField(
-                            onTap: () {
-                              listaCidades.addAll(ListaCidadesBrasil.listaCidadesBrasil);
-                              setState(
-                                () {
-                                  readyToWrite = true;
-                                },
-                              );
-                            },
-                            onChanged: (text) {
-                              String cidadeDigitadatoUpperCase =
-                                  ListaCidadesBrasilUppercase.formatarNomeUppercase(text);
-                              listaPosicao =
-                                  ListaCidadesBrasilUppercase.listarCidadesUpperCase(cidadeDigitadatoUpperCase);
+                  MediaQuery.of(context).orientation.name == 'portrait'
+                      ? Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: TextField(
+                                  onTap: () {
+                                    listaCidades.addAll(ListaCidadesBrasil.listaCidadesBrasil);
+                                    setState(
+                                      () {
+                                        readyToWrite = true;
+                                      },
+                                    );
+                                  },
+                                  onChanged: (text) {
+                                    String cidadeDigitadatoUpperCase =
+                                        ListaCidadesBrasilUppercase.formatarNomeUppercase(text);
+                                    listaPosicao =
+                                        ListaCidadesBrasilUppercase.listarCidadesUpperCase(cidadeDigitadatoUpperCase);
 
-                              listarCidades(listaPosicao);
-                            },
-                            keyboardType: TextInputType.text,
-                            textCapitalization: TextCapitalization.words,
-                            autocorrect: true,
-                            enableInteractiveSelection: true,
-                            showCursor: true,
-                            controller: _textEditingController,
-                            decoration: const InputDecoration(
-                              prefixIcon: Icon(
-                                Icons.search,
-                              ),
-                              prefixIconColor: Color.fromRGBO(32, 61, 20, 1),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(8.0),
+                                    listarCidades(listaPosicao);
+                                  },
+                                  keyboardType: TextInputType.text,
+                                  textCapitalization: TextCapitalization.words,
+                                  autocorrect: true,
+                                  enableInteractiveSelection: true,
+                                  showCursor: true,
+                                  controller: _textEditingController,
+                                  decoration: const InputDecoration(
+                                    prefixIcon: Icon(
+                                      Icons.search,
+                                    ),
+                                    prefixIconColor: Color.fromRGBO(32, 61, 20, 1),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(8.0),
+                                      ),
+                                    ),
+                                    hintText: 'Ex: Londrina',
+                                    filled: true,
+                                  ),
                                 ),
                               ),
-                              hintText: 'Ex: Londrina',
-                              filled: true,
                             ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                          ],
+                        )
+                      : const SizedBox.shrink(),
                   if (readyToWrite)
                     mostrarListaDigitando()
                   else
@@ -200,12 +209,12 @@ class _HomePageState extends State<HomePage> {
                         child: Column(
                           children: [
                             SfCartesianChart(
+                              margin: const EdgeInsets.all(0),
                               trackballBehavior: _trackballBehavior,
                               primaryXAxis: CategoryAxis(
                                 edgeLabelPlacement: EdgeLabelPlacement.shift,
-                                interval: 3,
+                                interval: MediaQuery.of(context).orientation.name == 'portrait' ? 3 : 1,
                                 majorGridLines: const MajorGridLines(width: 0),
-                                maximumLabels: 36,
                                 labelRotation: -90,
                                 title: AxisTitle(text: 'Decêndios'),
                               ),
@@ -274,55 +283,65 @@ class _HomePageState extends State<HomePage> {
                               ],
                             ),
                             SfCartesianChart(
+                              margin: const EdgeInsets.all(0),
                               onMarkerRender: (MarkerRenderArgs markerargs) {
                                 markerargs.color = const Color.fromRGBO(255, 255, 255, 1);
                               },
                               trackballBehavior: _trackballBehaviorMedia,
                               primaryXAxis: CategoryAxis(
                                 edgeLabelPlacement: EdgeLabelPlacement.shift,
-                                interval: 3,
+                                interval: MediaQuery.of(context).orientation.name == 'portrait' ? 3 : 1,
                                 majorGridLines: const MajorGridLines(width: 0),
-                                maximumLabels: 36,
                                 labelRotation: -90,
                                 title: AxisTitle(text: 'Decêndios'),
                                 plotBands: <PlotBand>[
                                   PlotBand(
-                                      isVisible: true,
-                                      start: 16.1,
-                                      end: 25.1,
-                                      text: 'Inverno',
-                                      textStyle: const TextStyle(color: Colors.black, fontSize: 13),
-                                      color: const Color.fromRGBO(101, 199, 209, 1)),
+                                    isVisible: true,
+                                    start: 16.1,
+                                    end: 25.1,
+                                    text: 'Inverno',
+                                    textStyle: const TextStyle(color: Colors.black, fontSize: 13),
+                                    color: const Color.fromRGBO(101, 199, 209, 0.2),
+                                    opacity: 0.5,
+                                  ),
                                   PlotBand(
-                                      horizontalTextAlignment: TextAnchor.middle,
-                                      isVisible: true,
-                                      start: -0.5,
-                                      end: 7.1,
-                                      text: 'Verão',
-                                      textStyle: const TextStyle(color: Colors.black, fontSize: 13),
-                                      color: const Color.fromRGBO(254, 213, 2, 1)),
+                                    horizontalTextAlignment: TextAnchor.middle,
+                                    isVisible: true,
+                                    start: -0.5,
+                                    end: 7.1,
+                                    text: 'Verão',
+                                    textStyle: const TextStyle(color: Colors.black, fontSize: 13),
+                                    color: const Color.fromRGBO(254, 213, 2, 0.2),
+                                    opacity: 0.5,
+                                  ),
                                   PlotBand(
-                                      horizontalTextAlignment: TextAnchor.middle,
-                                      isVisible: true,
-                                      start: 34.1,
-                                      end: 36,
-                                      text: 'Verão',
-                                      textStyle: const TextStyle(color: Colors.black, fontSize: 13),
-                                      color: const Color.fromRGBO(254, 213, 2, 1)),
+                                    horizontalTextAlignment: TextAnchor.middle,
+                                    isVisible: true,
+                                    start: 34.1,
+                                    end: 36,
+                                    text: 'Verão',
+                                    textStyle: const TextStyle(color: Colors.black, fontSize: 13),
+                                    color: const Color.fromRGBO(254, 213, 2, 0.2),
+                                    opacity: 0.5,
+                                  ),
                                   PlotBand(
-                                      isVisible: true,
-                                      start: 25.1,
-                                      end: 34.1,
-                                      text: 'Primavera',
-                                      textStyle: const TextStyle(color: Colors.black, fontSize: 13),
-                                      color: const Color.fromRGBO(140, 198, 62, 1)),
+                                    isVisible: true,
+                                    start: 25.1,
+                                    end: 34.1,
+                                    text: 'Primavera',
+                                    textStyle: const TextStyle(color: Colors.black, fontSize: 13),
+                                    color: const Color.fromRGBO(140, 198, 62, 0.2),
+                                    opacity: 0.5,
+                                  ),
                                   PlotBand(
-                                      isVisible: true,
-                                      start: 7.1,
-                                      end: 16.1,
-                                      text: 'Outono',
-                                      textStyle: const TextStyle(color: Colors.black, fontSize: 13),
-                                      color: const Color.fromRGBO(217, 112, 1, 1)),
+                                    isVisible: true,
+                                    start: 7.1,
+                                    end: 16.1,
+                                    text: 'Outono',
+                                    textStyle: const TextStyle(color: Colors.black, fontSize: 13),
+                                    color: const Color.fromRGBO(217, 112, 1, 0.2),
+                                    opacity: 0.5,
+                                  ),
                                 ],
                               ),
                               primaryYAxis: NumericAxis(
@@ -330,14 +349,15 @@ class _HomePageState extends State<HomePage> {
                                 axisLine: const AxisLine(width: 0),
                                 majorTickLines: const MajorTickLines(color: Colors.transparent),
                               ),
-                              title: ChartTitle(text: 'Média de Estiagem (%) - Região: $_mesorregiao'),
+                              title: ChartTitle(text: 'Média de Estiagem na Região: $_mesorregiao'),
                               legend: Legend(
                                 position: LegendPosition.bottom,
                                 isResponsive: true,
                               ),
                               series: <LineSeries<PlotMediaMesorregiao, String>>[
                                 LineSeries<PlotMediaMesorregiao, String>(
-                                  color: Colors.white,
+                                  color: Colors.deepPurpleAccent,
+                                  width: 3,
                                   name: 'Média Estiagem (%)',
                                   xAxisName: 'Decêndios',
                                   yAxisName: '(%) Estiagem',
@@ -345,45 +365,45 @@ class _HomePageState extends State<HomePage> {
                                     height: 3,
                                     width: 3,
                                     isVisible: true,
-                                    color: Color.fromRGBO(192, 108, 132, 1),
+                                    borderColor: Color.fromRGBO(192, 108, 132, 1),
                                   ),
                                   dataSource: <PlotMediaMesorregiao>[
-                                    PlotMediaMesorregiao('jan-1', _mediaEstiagem[0]),
-                                    PlotMediaMesorregiao('jan-2', _mediaEstiagem[1]),
-                                    PlotMediaMesorregiao('jan-3', _mediaEstiagem[2]),
-                                    PlotMediaMesorregiao('fev-1', _mediaEstiagem[3]),
-                                    PlotMediaMesorregiao('fev-2', _mediaEstiagem[4]),
-                                    PlotMediaMesorregiao('fev-3', _mediaEstiagem[5]),
-                                    PlotMediaMesorregiao('mar-1', _mediaEstiagem[6]),
-                                    PlotMediaMesorregiao('mar-2', _mediaEstiagem[7]),
-                                    PlotMediaMesorregiao('mar-3', _mediaEstiagem[8]),
-                                    PlotMediaMesorregiao('abr-1', _mediaEstiagem[9]),
-                                    PlotMediaMesorregiao('abr-2', _mediaEstiagem[10]),
-                                    PlotMediaMesorregiao('abr-3', _mediaEstiagem[11]),
-                                    PlotMediaMesorregiao('mai-1', _mediaEstiagem[12]),
-                                    PlotMediaMesorregiao('mai-2', _mediaEstiagem[13]),
-                                    PlotMediaMesorregiao('mai-3', _mediaEstiagem[14]),
-                                    PlotMediaMesorregiao('jun-1', _mediaEstiagem[15]),
-                                    PlotMediaMesorregiao('jun-2', _mediaEstiagem[16]),
-                                    PlotMediaMesorregiao('jun-3', _mediaEstiagem[17]),
-                                    PlotMediaMesorregiao('jul-1', _mediaEstiagem[18]),
-                                    PlotMediaMesorregiao('jul-2', _mediaEstiagem[19]),
-                                    PlotMediaMesorregiao('jul-3', _mediaEstiagem[20]),
-                                    PlotMediaMesorregiao('ago-1', _mediaEstiagem[21]),
-                                    PlotMediaMesorregiao('ago-2', _mediaEstiagem[22]),
-                                    PlotMediaMesorregiao('ago-3', _mediaEstiagem[23]),
-                                    PlotMediaMesorregiao('set-1', _mediaEstiagem[24]),
-                                    PlotMediaMesorregiao('set-2', _mediaEstiagem[25]),
-                                    PlotMediaMesorregiao('set-3', _mediaEstiagem[26]),
-                                    PlotMediaMesorregiao('out-1', _mediaEstiagem[27]),
-                                    PlotMediaMesorregiao('out-2', _mediaEstiagem[28]),
-                                    PlotMediaMesorregiao('out-3', _mediaEstiagem[29]),
-                                    PlotMediaMesorregiao('nov-1', _mediaEstiagem[30]),
-                                    PlotMediaMesorregiao('nov-2', _mediaEstiagem[31]),
-                                    PlotMediaMesorregiao('nov-3', _mediaEstiagem[32]),
-                                    PlotMediaMesorregiao('dez-1', _mediaEstiagem[33]),
-                                    PlotMediaMesorregiao('dez-2', _mediaEstiagem[34]),
-                                    PlotMediaMesorregiao('dez-3', _mediaEstiagem[35]),
+                                    PlotMediaMesorregiao('1-10/jan', _mediaEstiagem[0]),
+                                    PlotMediaMesorregiao('11-20/jan', _mediaEstiagem[1]),
+                                    PlotMediaMesorregiao('21-31/jan', _mediaEstiagem[2]),
+                                    PlotMediaMesorregiao('1-10/fev', _mediaEstiagem[3]),
+                                    PlotMediaMesorregiao('11-20/fev', _mediaEstiagem[4]),
+                                    PlotMediaMesorregiao('21-29fev', _mediaEstiagem[5]),
+                                    PlotMediaMesorregiao('1-10/mar', _mediaEstiagem[6]),
+                                    PlotMediaMesorregiao('11-20/mar', _mediaEstiagem[7]),
+                                    PlotMediaMesorregiao('21-31/mar', _mediaEstiagem[8]),
+                                    PlotMediaMesorregiao('1-10/abr', _mediaEstiagem[9]),
+                                    PlotMediaMesorregiao('11-20/abr', _mediaEstiagem[10]),
+                                    PlotMediaMesorregiao('21-30/abr', _mediaEstiagem[11]),
+                                    PlotMediaMesorregiao('1-10/mai', _mediaEstiagem[12]),
+                                    PlotMediaMesorregiao('11-20/mai', _mediaEstiagem[13]),
+                                    PlotMediaMesorregiao('21-31/mai', _mediaEstiagem[14]),
+                                    PlotMediaMesorregiao('1-10/jun', _mediaEstiagem[15]),
+                                    PlotMediaMesorregiao('11-20/jun', _mediaEstiagem[16]),
+                                    PlotMediaMesorregiao('21-30/jun', _mediaEstiagem[17]),
+                                    PlotMediaMesorregiao('1-10/jul', _mediaEstiagem[18]),
+                                    PlotMediaMesorregiao('11-20/jul', _mediaEstiagem[19]),
+                                    PlotMediaMesorregiao('21-31/jul', _mediaEstiagem[20]),
+                                    PlotMediaMesorregiao('1-10/ago', _mediaEstiagem[21]),
+                                    PlotMediaMesorregiao('11-20/ago', _mediaEstiagem[22]),
+                                    PlotMediaMesorregiao('21-31/ago', _mediaEstiagem[23]),
+                                    PlotMediaMesorregiao('1-10/set', _mediaEstiagem[24]),
+                                    PlotMediaMesorregiao('11-20/set', _mediaEstiagem[25]),
+                                    PlotMediaMesorregiao('21-30/set', _mediaEstiagem[26]),
+                                    PlotMediaMesorregiao('1-10/out', _mediaEstiagem[27]),
+                                    PlotMediaMesorregiao('11-20/out', _mediaEstiagem[28]),
+                                    PlotMediaMesorregiao('21-31/out', _mediaEstiagem[29]),
+                                    PlotMediaMesorregiao('1-10/nov', _mediaEstiagem[30]),
+                                    PlotMediaMesorregiao('11-20/nov', _mediaEstiagem[31]),
+                                    PlotMediaMesorregiao('21-30/nov', _mediaEstiagem[32]),
+                                    PlotMediaMesorregiao('1-10/dez', _mediaEstiagem[33]),
+                                    PlotMediaMesorregiao('11-20/dez', _mediaEstiagem[34]),
+                                    PlotMediaMesorregiao('21-31/dez', _mediaEstiagem[35]),
                                   ],
                                   xValueMapper: (PlotMediaMesorregiao sales, _) => sales.decendio,
                                   yValueMapper: (PlotMediaMesorregiao sales, _) => sales.risco,
@@ -430,20 +450,19 @@ class _HomePageState extends State<HomePage> {
                         color: Colors.amber,
                       )
                     : null,
-                onTap: () {
+                onTap: () async {
                   setState(
                     () {
-
                       FocusManager.instance.primaryFocus?.unfocus();
                       _mediaEstiagem.clear();
                       _riscoEstiagem.clear();
                       readyToWrite = false;
                     },
                   );
-                  _findLocal(
+                  _loadCSV().whenComplete(() => _findLocal(
                       ListaCidadesBrasil.listaIdCidades[ListaCidadesBrasil.listaCidadesBrasil
                           .indexWhere((element) => element == listaCidades[index])],
-                      listaCidades[index]);
+                      listaCidades[index]));
                 },
                 title: Text(
                   listaCidades[index],
@@ -472,7 +491,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _findLocal(int estacao, String cityName) async {
-   _data = await _loadCSV().whenComplete(() => null);
     double auxStringToDouble;
     int auxDoubleToInt;
     for (var element in _data) {
@@ -481,7 +499,6 @@ class _HomePageState extends State<HomePage> {
         auxDoubleToInt = auxStringToDouble.toInt();
         setState(
           () {
-
             _cidade = cityName;
             _riscoEstiagem.add(auxDoubleToInt);
             _mesorregiao = CityNames.cityNames[estacao]![2];
