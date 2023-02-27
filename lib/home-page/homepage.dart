@@ -433,6 +433,7 @@ class _HomePageState extends State<HomePage> {
                 onTap: () {
                   setState(
                     () {
+
                       FocusManager.instance.primaryFocus?.unfocus();
                       _mediaEstiagem.clear();
                       _riscoEstiagem.clear();
@@ -471,7 +472,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _findLocal(int estacao, String cityName) async {
-   _data = await _loadCSV();
+   _data = await _loadCSV().whenComplete(() => null);
     double auxStringToDouble;
     int auxDoubleToInt;
     for (var element in _data) {
@@ -480,6 +481,7 @@ class _HomePageState extends State<HomePage> {
         auxDoubleToInt = auxStringToDouble.toInt();
         setState(
           () {
+
             _cidade = cityName;
             _riscoEstiagem.add(auxDoubleToInt);
             _mesorregiao = CityNames.cityNames[estacao]![2];
