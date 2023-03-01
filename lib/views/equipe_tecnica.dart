@@ -14,7 +14,7 @@ class _EquipeTecnicaState extends State<EquipeTecnica> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(onPressed: (){
-          Get.offAllNamed('/');
+          Get.back();
         }, icon: const Icon(Icons.arrow_back)),
         elevation: 0,
         toolbarHeight: 48,

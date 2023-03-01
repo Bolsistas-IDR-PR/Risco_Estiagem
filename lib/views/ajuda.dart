@@ -15,7 +15,7 @@ class _AjudaState extends State<Ajuda> {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              Get.offAllNamed('/');
+              Get.back();
             },
             icon: const Icon(Icons.arrow_back)),
         elevation: 0,
