@@ -13,7 +13,7 @@ class _SobreState extends State<Sobre> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(onPressed: (){
-          Get.offAllNamed('/');
+          Get.back();
         }, icon: const Icon(Icons.arrow_back)),
         elevation: 0,
         toolbarHeight: 48,
