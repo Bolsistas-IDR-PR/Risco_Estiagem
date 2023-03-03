@@ -129,7 +129,9 @@ class _MediaRegionalState extends State<MediaRegional> {
             case 10:
               return buildPlots('Sudoeste Paranaense', ListaCidadesBrasil.sedoesteParanaense, index);
           }
-          return const Divider();
+          return const SizedBox.square(
+            dimension: 2,
+          );
         },
       ),
     );
@@ -138,150 +140,155 @@ class _MediaRegionalState extends State<MediaRegional> {
   Padding buildPlots(String regiao, List<double> list, int idx) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: SfCartesianChart(
-        margin: const EdgeInsets.all(0),
-        onMarkerRender: (MarkerRenderArgs markerargs) {
-          markerargs.color = const Color.fromRGBO(255, 255, 255, 1);
-        },
-        trackballBehavior: idx == 1
-            ? _trackballBehavior1
-            : idx == 2
-                ? _trackballBehavior2
-                : idx == 3
-                    ? _trackballBehavior3
-                    : idx == 4
-                        ? _trackballBehavior4
-                        : idx == 5
-                            ? _trackballBehavior5
-                            : idx == 6
-                                ? _trackballBehavior6
-                                : idx == 7
-                                    ? _trackballBehavior7
-                                    : idx == 8
-                                        ? _trackballBehavior8
-                                        : idx == 9
-                                            ? _trackballBehavior9
-                                            : _trackballBehavior10,
-        primaryXAxis: CategoryAxis(
-          edgeLabelPlacement: EdgeLabelPlacement.shift,
-          interval: MediaQuery.of(context).orientation.name == 'portrait' ? 3 : 1,
-          majorGridLines: const MajorGridLines(width: 0),
-          labelRotation: -90,
-          title: AxisTitle(text: 'Decêndios'),
-          plotBands: <PlotBand>[
-            PlotBand(
-              isVisible: true,
-              start: 16.1,
-              end: 25.1,
-              text: 'Inverno',
-              textStyle: const TextStyle(color: Colors.black, fontSize: 13),
-              color: const Color.fromRGBO(101, 199, 209, 0.2),
-              opacity: 0.5,
+      child: Column(
+        children: [
+          SfCartesianChart(
+            margin: const EdgeInsets.all(0),
+            onMarkerRender: (MarkerRenderArgs markerargs) {
+              markerargs.color = const Color.fromRGBO(255, 255, 255, 1);
+            },
+            trackballBehavior: idx == 1
+                ? _trackballBehavior1
+                : idx == 2
+                    ? _trackballBehavior2
+                    : idx == 3
+                        ? _trackballBehavior3
+                        : idx == 4
+                            ? _trackballBehavior4
+                            : idx == 5
+                                ? _trackballBehavior5
+                                : idx == 6
+                                    ? _trackballBehavior6
+                                    : idx == 7
+                                        ? _trackballBehavior7
+                                        : idx == 8
+                                            ? _trackballBehavior8
+                                            : idx == 9
+                                                ? _trackballBehavior9
+                                                : _trackballBehavior10,
+            primaryXAxis: CategoryAxis(
+              edgeLabelPlacement: EdgeLabelPlacement.shift,
+              interval: MediaQuery.of(context).orientation.name == 'portrait' ? 3 : 1,
+              majorGridLines: const MajorGridLines(width: 0),
+              labelRotation: -90,
+              title: AxisTitle(text: 'Decêndios'),
+              plotBands: <PlotBand>[
+                PlotBand(
+                  isVisible: true,
+                  start: 16.1,
+                  end: 25.1,
+                  text: 'Inverno',
+                  textStyle: const TextStyle(color: Colors.black, fontSize: 13),
+                  color: const Color.fromRGBO(101, 199, 209, 0.2),
+                  opacity: 0.5,
+                ),
+                PlotBand(
+                  horizontalTextAlignment: TextAnchor.middle,
+                  isVisible: true,
+                  start: -0.5,
+                  end: 7.1,
+                  text: 'Verão',
+                  textStyle: const TextStyle(color: Colors.black, fontSize: 13),
+                  color: const Color.fromRGBO(254, 213, 2, 0.2),
+                  opacity: 0.5,
+                ),
+                PlotBand(
+                  horizontalTextAlignment: TextAnchor.middle,
+                  isVisible: true,
+                  start: 34.1,
+                  end: 36,
+                  text: 'Verão',
+                  textStyle: const TextStyle(color: Colors.black, fontSize: 13),
+                  color: const Color.fromRGBO(254, 213, 2, 0.2),
+                  opacity: 0.5,
+                ),
+                PlotBand(
+                  isVisible: true,
+                  start: 25.1,
+                  end: 34.1,
+                  text: 'Primavera',
+                  textStyle: const TextStyle(color: Colors.black, fontSize: 13),
+                  color: const Color.fromRGBO(140, 198, 62, 0.2),
+                  opacity: 0.5,
+                ),
+                PlotBand(
+                  isVisible: true,
+                  start: 7.1,
+                  end: 16.1,
+                  text: 'Outono',
+                  textStyle: const TextStyle(color: Colors.black, fontSize: 13),
+                  color: const Color.fromRGBO(217, 112, 1, 0.2),
+                  opacity: 0.5,
+                ),
+              ],
             ),
-            PlotBand(
-              horizontalTextAlignment: TextAnchor.middle,
-              isVisible: true,
-              start: -0.5,
-              end: 7.1,
-              text: 'Verão',
-              textStyle: const TextStyle(color: Colors.black, fontSize: 13),
-              color: const Color.fromRGBO(254, 213, 2, 0.2),
-              opacity: 0.5,
+            primaryYAxis: NumericAxis(
+              labelFormat: '{value}%',
+              axisLine: const AxisLine(width: 0),
+              majorTickLines: const MajorTickLines(color: Colors.transparent),
             ),
-            PlotBand(
-              horizontalTextAlignment: TextAnchor.middle,
-              isVisible: true,
-              start: 34.1,
-              end: 36,
-              text: 'Verão',
-              textStyle: const TextStyle(color: Colors.black, fontSize: 13),
-              color: const Color.fromRGBO(254, 213, 2, 0.2),
-              opacity: 0.5,
+            title: ChartTitle(text: 'Média de Estiagem na Região: $regiao'),
+            legend: Legend(
+              position: LegendPosition.bottom,
+              isResponsive: true,
             ),
-            PlotBand(
-              isVisible: true,
-              start: 25.1,
-              end: 34.1,
-              text: 'Primavera',
-              textStyle: const TextStyle(color: Colors.black, fontSize: 13),
-              color: const Color.fromRGBO(140, 198, 62, 0.2),
-              opacity: 0.5,
-            ),
-            PlotBand(
-              isVisible: true,
-              start: 7.1,
-              end: 16.1,
-              text: 'Outono',
-              textStyle: const TextStyle(color: Colors.black, fontSize: 13),
-              color: const Color.fromRGBO(217, 112, 1, 0.2),
-              opacity: 0.5,
-            ),
-          ],
-        ),
-        primaryYAxis: NumericAxis(
-          labelFormat: '{value}%',
-          axisLine: const AxisLine(width: 0),
-          majorTickLines: const MajorTickLines(color: Colors.transparent),
-        ),
-        title: ChartTitle(text: 'Média de Estiagem na Região: $regiao'),
-        legend: Legend(
-          position: LegendPosition.bottom,
-          isResponsive: true,
-        ),
-        series: <LineSeries<PlotMedia, String>>[
-          LineSeries<PlotMedia, String>(
-            color: Colors.deepPurpleAccent,
-            width: 3,
-            name: 'Média Estiagem (%)',
-            xAxisName: 'Decêndios',
-            yAxisName: '(%) Estiagem',
-            markerSettings: const MarkerSettings(
-              height: 3,
-              width: 3,
-              isVisible: true,
-              borderColor: Color.fromRGBO(192, 108, 132, 1),
-            ),
-            dataSource: <PlotMedia>[
-              PlotMedia('1-10/jan', list[0]),
-              PlotMedia('11-20/jan', list[1]),
-              PlotMedia('21-31/jan', list[2]),
-              PlotMedia('1-10/fev', list[3]),
-              PlotMedia('11-20/fev', list[4]),
-              PlotMedia('21-29fev', list[5]),
-              PlotMedia('1-10/mar', list[6]),
-              PlotMedia('11-20/mar', list[7]),
-              PlotMedia('21-31/mar', list[8]),
-              PlotMedia('1-10/abr', list[9]),
-              PlotMedia('11-20/abr', list[10]),
-              PlotMedia('21-30/abr', list[11]),
-              PlotMedia('1-10/mai', list[12]),
-              PlotMedia('11-20/mai', list[13]),
-              PlotMedia('21-31/mai', list[14]),
-              PlotMedia('1-10/jun', list[15]),
-              PlotMedia('11-20/jun', list[16]),
-              PlotMedia('21-30/jun', list[17]),
-              PlotMedia('1-10/jul', list[18]),
-              PlotMedia('11-20/jul', list[19]),
-              PlotMedia('21-31/jul', list[20]),
-              PlotMedia('1-10/ago', list[21]),
-              PlotMedia('11-20/ago', list[22]),
-              PlotMedia('21-31/ago', list[23]),
-              PlotMedia('1-10/set', list[24]),
-              PlotMedia('11-20/set', list[25]),
-              PlotMedia('21-30/set', list[26]),
-              PlotMedia('1-10/out', list[27]),
-              PlotMedia('11-20/out', list[28]),
-              PlotMedia('21-31/out', list[29]),
-              PlotMedia('1-10/nov', list[30]),
-              PlotMedia('11-20/nov', list[31]),
-              PlotMedia('21-30/nov', list[32]),
-              PlotMedia('1-10/dez', list[33]),
-              PlotMedia('11-20/dez', list[34]),
-              PlotMedia('21-31/dez', list[35]),
+            series: <LineSeries<PlotMedia, String>>[
+              LineSeries<PlotMedia, String>(
+                color: Colors.deepPurpleAccent,
+                width: 3,
+                name: 'Média Estiagem (%)',
+                xAxisName: 'Decêndios',
+                yAxisName: '(%) Estiagem',
+                markerSettings: const MarkerSettings(
+                  height: 3,
+                  width: 3,
+                  isVisible: true,
+                  borderColor: Color.fromRGBO(192, 108, 132, 1),
+                ),
+                dataSource: <PlotMedia>[
+                  PlotMedia('1-10/jan', list[0]),
+                  PlotMedia('11-20/jan', list[1]),
+                  PlotMedia('21-31/jan', list[2]),
+                  PlotMedia('1-10/fev', list[3]),
+                  PlotMedia('11-20/fev', list[4]),
+                  PlotMedia('21-29fev', list[5]),
+                  PlotMedia('1-10/mar', list[6]),
+                  PlotMedia('11-20/mar', list[7]),
+                  PlotMedia('21-31/mar', list[8]),
+                  PlotMedia('1-10/abr', list[9]),
+                  PlotMedia('11-20/abr', list[10]),
+                  PlotMedia('21-30/abr', list[11]),
+                  PlotMedia('1-10/mai', list[12]),
+                  PlotMedia('11-20/mai', list[13]),
+                  PlotMedia('21-31/mai', list[14]),
+                  PlotMedia('1-10/jun', list[15]),
+                  PlotMedia('11-20/jun', list[16]),
+                  PlotMedia('21-30/jun', list[17]),
+                  PlotMedia('1-10/jul', list[18]),
+                  PlotMedia('11-20/jul', list[19]),
+                  PlotMedia('21-31/jul', list[20]),
+                  PlotMedia('1-10/ago', list[21]),
+                  PlotMedia('11-20/ago', list[22]),
+                  PlotMedia('21-31/ago', list[23]),
+                  PlotMedia('1-10/set', list[24]),
+                  PlotMedia('11-20/set', list[25]),
+                  PlotMedia('21-30/set', list[26]),
+                  PlotMedia('1-10/out', list[27]),
+                  PlotMedia('11-20/out', list[28]),
+                  PlotMedia('21-31/out', list[29]),
+                  PlotMedia('1-10/nov', list[30]),
+                  PlotMedia('11-20/nov', list[31]),
+                  PlotMedia('21-30/nov', list[32]),
+                  PlotMedia('1-10/dez', list[33]),
+                  PlotMedia('11-20/dez', list[34]),
+                  PlotMedia('21-31/dez', list[35]),
+                ],
+                xValueMapper: (PlotMedia sales, _) => sales.decendio,
+                yValueMapper: (PlotMedia sales, _) => sales.risco,
+              ),
             ],
-            xValueMapper: (PlotMedia sales, _) => sales.decendio,
-            yValueMapper: (PlotMedia sales, _) => sales.risco,
           ),
+          const Divider(),
         ],
       ),
     );
