@@ -1,4 +1,4 @@
-name: estiagem
+name: estiagem_parana
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -37,10 +37,11 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   google_maps_flutter: ^2.2.3
-  get: ^4.6.5
   syncfusion_flutter_charts: ^20.4.50
   csv: ^5.0.1
   google_fonts: ^4.0.3
+  url_launcher: ^6.1.10
+  flutter_native_splash: ^2.2.18
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +71,7 @@ flutter:
     - assets/assets_appBar/
     - assets/assets_drawer/
     - assets/assets_mesorregiao/
+    - assets/assets_sobre/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

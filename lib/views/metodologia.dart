@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Metodologia extends StatefulWidget {
@@ -14,10 +13,10 @@ class _MetodologiaState extends State<Metodologia> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.green,
         leading: IconButton(
             onPressed: () {
-              Get.back();
-
+              Navigator.pop(context);
             },
             icon: const Icon(Icons.arrow_back)),
         elevation: 0,
@@ -32,21 +31,21 @@ class _MetodologiaState extends State<Metodologia> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
-            children:  [
+            children: [
               Align(
                 alignment: Alignment.topCenter,
                 child: Text(
-                  'O aplicativo foi desenvolvido para oferecer uma visão estatística sobre o risco de estiagem nos municípios do Paraná.'
-                      ' Os dados foram obtidos através da base de dados das seguintes instituições: Instituto Água e Terra, '
-                      'Instituito de Desenvolvimento Rural do Paraná - IAPAR - EMATER e SIMEPAR.\n\n'
-                      'Todos os dados coletados foram selecionados pelos seguintes critérios: Período acima de 30 anos de dados e estações de confiabilidade.\n\n'
-                      'O software utilizado para requisitar os dados do DB e manipulá-los foi o PostgreSQL. Os dados foram exportados como um arquivo de '
-                      'formato CSV e este importado para o '
-                      'ambiente de desenvolvimento. Foi utilizado o framework Flutter para desenvolver o aplicativo móvel.'
-                      ,
+                  '   Foram utilizados dados de precipitação pluviométrica das estações meteorológicas'
+                      ' e postos pluviométricos do Instituto de Desenvolvimento Rural do Paraná – IAPAR-EMATER (IDR-Paraná),'
+                      ' do Instituto Água e Terra (IAT) e do Sistema de Tecnologia e Monitoramento Ambiental do Paraná (SIMEPAR).'
+                      ' Apenas os registros de dados superiores a 30 anos foram utilizados. O preenchimento das falhas pontuais'
+                      ' foi realizado buscando dados em estações mais próximas, em um raio máximo de 100 km. Utilizou-se do'
+                      ' software PostgreSQL para requisição dos dados e do framework Flutter para desenvolvimento do aplicativo.'
+                      ' A estimativa percentual do risco, para a escala temporal decendial (10 dias),'
+                      ' foi obtida através da frequência de eventos de estiagem em relação ao maior período'
+                      ' de dados das estações alocadas em cada município paranaense.',
                   textAlign: TextAlign.justify,
-                  style: GoogleFonts.openSans(fontSize: 16),
-
+                  style: GoogleFonts.openSans(fontSize: 18),
                 ),
               ),
             ],
