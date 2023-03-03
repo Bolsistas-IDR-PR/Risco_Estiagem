@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+
 import '../repository/city_names.dart';
 
 
@@ -14,14 +15,28 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-late GoogleMapController mapController;
-const LatLng _center = LatLng(-23.2927, -51.1732);
-
-void _onMapCreated(GoogleMapController controller) {
-  mapController = controller;
-}
-
 class _HomePageState extends State<HomePage> {
+
+  late GoogleMapController mapController;
+
+  LatLng _markerLocation = LatLng(-23.52,-51.22);
+  late InfoWindow _markername;
+
+  late Marker marker = Marker(
+    icon: BitmapDescriptor.defaultMarkerWithHue(235),
+    markerId: MarkerId('marker_1'),
+    position: _markerLocation,
+    infoWindow: InfoWindow(title: "sdfsdf"),
+  );
+
+
+  void _setMap (int codEstacao) {
+    setState(() {
+      _markerLocation =  LatLng(CityNames.cityNames[codEstacao]![3], CityNames.cityNames[codEstacao]![4]);
+    });
+  }
+
+
   List<List<dynamic>> _data = [];
   late TrackballBehavior _trackballBehavior;
   late TrackballBehavior _trackballBehaviorMedia;
@@ -30,6 +45,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     initialization();
     _loadCSV().then((value) => _findLocal(2351035, 'Londrina'));
+    _setMap(2351035);
     _trackballBehavior = TrackballBehavior(
         activationMode: ActivationMode.singleTap,
         enable: true,
@@ -417,6 +433,26 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ],
                             ),
+                            const Divider(),
+                            Text("Mapa Localização Estação"),
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 300,
+                              child: SafeArea(
+                                child: GoogleMap(
+                                  zoomGesturesEnabled: false,
+                                  initialCameraPosition: CameraPosition(
+                                    target: _markerLocation,
+                                    zoom: 6,
+                                  ),
+                                  markers: Set<Marker>.of([marker]),
+                                  mapType: MapType.terrain,
+                                  onMapCreated: (GoogleMapController controller) {
+                                    mapController = controller;
+                                  },
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -443,6 +479,8 @@ class _HomePageState extends State<HomePage> {
                       )
                     : null,
                 onTap: () async {
+                  _setMap( ListaCidadesBrasil.listaIdCidades[ListaCidadesBrasil.listaCidadesBrasil
+                      .indexWhere((element) => element == listaCidades[index])]);
                   _loadCSV().whenComplete(() => _findLocal(
                       ListaCidadesBrasil.listaIdCidades[ListaCidadesBrasil.listaCidadesBrasil
                           .indexWhere((element) => element == listaCidades[index])],
@@ -473,6 +511,7 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
+
 
   void _findLocal(int estacao, String cityName) async {
     FocusManager.instance.primaryFocus?.unfocus();
