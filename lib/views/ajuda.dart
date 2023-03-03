@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class Ajuda extends StatefulWidget {
   const Ajuda({Key? key}) : super(key: key);
@@ -13,9 +12,10 @@ class _AjudaState extends State<Ajuda> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.green,
         leading: IconButton(
             onPressed: () {
-              Get.back();
+              Navigator.pop(context);
             },
             icon: const Icon(Icons.arrow_back)),
         elevation: 0,

@@ -1,7 +1,7 @@
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -27,28 +27,35 @@ class _HomePageState extends State<HomePage> {
   late TrackballBehavior _trackballBehaviorMedia;
   @override
   void initState() {
+    super.initState();
+    initialization();
     _loadCSV().then((value) => _findLocal(2351035, 'Londrina'));
     _trackballBehavior = TrackballBehavior(
         activationMode: ActivationMode.singleTap,
         enable: true,
         markerSettings:
-            const TrackballMarkerSettings(markerVisibility: TrackballVisibilityMode.visible, borderColor: Colors.black),
+        const TrackballMarkerSettings(markerVisibility: TrackballVisibilityMode.visible, borderColor: Colors.black),
         tooltipDisplayMode: TrackballDisplayMode.groupAllPoints);
 
     _trackballBehaviorMedia = TrackballBehavior(
         activationMode: ActivationMode.singleTap,
         enable: true,
         markerSettings:
-            const TrackballMarkerSettings(markerVisibility: TrackballVisibilityMode.visible, borderColor: Colors.black),
+        const TrackballMarkerSettings(markerVisibility: TrackballVisibilityMode.visible, borderColor: Colors.black),
         tooltipDisplayMode: TrackballDisplayMode.groupAllPoints);
+  }
 
-    super.initState();
+  void initialization() async {
+    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
+    FlutterNativeSplash.remove();
   }
 
   @override
   void dispose() {
-    super.dispose();
     _textEditingController.dispose();
+    super.dispose();
+
   }
 
   Future _loadCSV() async {
@@ -83,6 +90,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.green,
         elevation: 0,
         toolbarHeight: 48,
         title: const Text("Risco Estiagem Paraná"),
@@ -101,43 +109,44 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             ListTile(
-              title: const Text('Introdução'),
+              title: const Text('Apresentação'),
               onTap: () {
-                Get.toNamed('/introducao');
+                Navigator.of(context).pushNamed('/introducao');
               },
             ),
             ListTile(
               title: const Text('Metodologia'),
               onTap: () {
-                Get.toNamed('/metodologia');
+                Navigator.of(context).pushNamed('/metodologia');
               },
             ),
             ListTile(
               title: const Text('Média Regional de Estiagem'),
               onTap: () {
-                Get.toNamed('/media_regional');
+                Navigator.of(context).pushNamed('/media_regional');
               },
             ),
             const Divider(),
             ListTile(
               title: const Text('Sobre'),
               onTap: () {
-                Get.toNamed('/sobre');
+                Navigator.of(context).pushNamed('/sobre');
               },
             ),
             ListTile(
               title: const Text('Equipe Técnica'),
               onTap: () {
-                Get.toNamed('/equipe_tecnica');
+                Navigator.of(context).pushNamed('/equipe_tecnica');
               },
             ),
-            const Divider(),
-            ListTile(
-              title: const Text('Ajuda'),
-              onTap: () {
-                Get.toNamed('/ajuda');
-              },
-            ),
+            // const Divider(),
+            // ListTile(
+            //   title: const Text('Ajuda'),
+            //   onTap: () {
+            //     Navigator.pushNamed(context,'/ajuda');
+            //     //Get.toNamed('/ajuda');
+            //   },
+            // ),
           ],
         ),
       ),

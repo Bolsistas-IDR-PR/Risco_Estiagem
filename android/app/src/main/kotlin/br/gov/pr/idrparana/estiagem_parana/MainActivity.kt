@@ -1,4 +1,4 @@
-package com.example.estiagem
+package br.gov.pr.idrparana.estiagem_parana
 
 import io.flutter.embedding.android.FlutterActivity
 

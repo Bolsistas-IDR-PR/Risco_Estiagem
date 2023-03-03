@@ -1,7 +1,7 @@
-import 'package:estiagem/repository/city_names.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+
+import '../repository/city_names.dart';
 
 class MediaRegional extends StatefulWidget {
   const MediaRegional({Key? key}) : super(key: key);
@@ -90,9 +90,10 @@ class _MediaRegionalState extends State<MediaRegional> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.green,
         leading: IconButton(
             onPressed: () {
-              Get.back();
+              Navigator.pop(context);
             },
             icon: const Icon(Icons.arrow_back)),
         elevation: 0,
