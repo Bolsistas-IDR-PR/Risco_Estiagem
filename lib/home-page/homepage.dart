@@ -34,14 +34,14 @@ class _HomePageState extends State<HomePage> {
         activationMode: ActivationMode.singleTap,
         enable: true,
         markerSettings:
-        const TrackballMarkerSettings(markerVisibility: TrackballVisibilityMode.visible, borderColor: Colors.black),
+            const TrackballMarkerSettings(markerVisibility: TrackballVisibilityMode.visible, borderColor: Colors.black),
         tooltipDisplayMode: TrackballDisplayMode.groupAllPoints);
 
     _trackballBehaviorMedia = TrackballBehavior(
         activationMode: ActivationMode.singleTap,
         enable: true,
         markerSettings:
-        const TrackballMarkerSettings(markerVisibility: TrackballVisibilityMode.visible, borderColor: Colors.black),
+            const TrackballMarkerSettings(markerVisibility: TrackballVisibilityMode.visible, borderColor: Colors.black),
         tooltipDisplayMode: TrackballDisplayMode.groupAllPoints);
   }
 
@@ -55,7 +55,6 @@ class _HomePageState extends State<HomePage> {
   void dispose() {
     _textEditingController.dispose();
     super.dispose();
-
   }
 
   Future _loadCSV() async {
@@ -289,6 +288,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ],
                             ),
+                            const Divider(),
                             SfCartesianChart(
                               margin: const EdgeInsets.all(0),
                               onMarkerRender: (MarkerRenderArgs markerargs) {
@@ -458,14 +458,6 @@ class _HomePageState extends State<HomePage> {
                       )
                     : null,
                 onTap: () async {
-                  setState(
-                    () {
-                      FocusManager.instance.primaryFocus?.unfocus();
-                      _mediaEstiagem.clear();
-                      _riscoEstiagem.clear();
-                      readyToWrite = false;
-                    },
-                  );
                   _loadCSV().whenComplete(() => _findLocal(
                       ListaCidadesBrasil.listaIdCidades[ListaCidadesBrasil.listaCidadesBrasil
                           .indexWhere((element) => element == listaCidades[index])],
@@ -498,6 +490,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _findLocal(int estacao, String cityName) async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    _mediaEstiagem.clear();
+    _riscoEstiagem.clear();
+    readyToWrite = false;
     double auxStringToDouble;
     int auxDoubleToInt;
     for (var element in _data) {
