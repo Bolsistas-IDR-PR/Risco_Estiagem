@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-
 import '../repository/city_names.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
 
   Future _loadCSV() async {
     final rawData = await rootBundle.loadString("assets/db/riscoestiagem.csv");
-    List<List<dynamic>> listaData = const CsvToListConverter().convert(rawData);
+    List<List<dynamic>> listaData = const CsvToListConverter(eol: "\n").convert(rawData);
     setState(
       () {
         _data = listaData;
@@ -417,21 +417,6 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ],
                             ),
-                            const Divider(),
-                            Container(
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(15),
-                                  bottomRight: Radius.circular(15),
-                                ),
-                              ),
-                              width: MediaQuery.of(context).size.width,
-                              height: 250,
-                              child: const GoogleMap(
-                                onMapCreated: _onMapCreated,
-                                initialCameraPosition: CameraPosition(target: _center, zoom: 5.5),
-                              ),
-                            ),
                           ],
                         ),
                       ),
@@ -458,14 +443,6 @@ class _HomePageState extends State<HomePage> {
                       )
                     : null,
                 onTap: () async {
-                  setState(
-                    () {
-                      FocusManager.instance.primaryFocus?.unfocus();
-                      _mediaEstiagem.clear();
-                      _riscoEstiagem.clear();
-                      readyToWrite = false;
-                    },
-                  );
                   _loadCSV().whenComplete(() => _findLocal(
                       ListaCidadesBrasil.listaIdCidades[ListaCidadesBrasil.listaCidadesBrasil
                           .indexWhere((element) => element == listaCidades[index])],
@@ -498,6 +475,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _findLocal(int estacao, String cityName) async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    _mediaEstiagem.clear();
+    _riscoEstiagem.clear();
+    readyToWrite = false;
     double auxStringToDouble;
     int auxDoubleToInt;
     for (var element in _data) {
