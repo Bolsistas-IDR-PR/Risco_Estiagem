@@ -3,15 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../repository/authors_list.dart';
 
-
-class EquipeTecnica extends StatefulWidget {
+class EquipeTecnica extends StatelessWidget {
   const EquipeTecnica({Key? key}) : super(key: key);
 
-  @override
-  State<EquipeTecnica> createState() => _EquipeTecnicaState();
-}
-
-class _EquipeTecnicaState extends State<EquipeTecnica> {
   Future<void> _launchUrl(idx) async {
     // HttpOverrides.global = MyHttpOverrides();
     if (!await launchUrl(Authors.linkLattes[idx])) {
@@ -21,36 +15,21 @@ class _EquipeTecnicaState extends State<EquipeTecnica> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.green,
-        leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(Icons.arrow_back)),
-        elevation: 0,
-        toolbarHeight: 48,
-        title: const Text("Equipe Técnica"),
-        centerTitle: true,
-        actions: [
-          Image.asset('assets/assets_appBar/icon_idr_colored.png'),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          color: Colors.white,
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Column(
-                children: _list(context),
-              ),
-              const SizedBox(
-                height: 56,
-              ),
-            ],
-          ),
+    return SingleChildScrollView(
+      child: Container(
+        color: Colors.white,
+        padding: MediaQuery.of(context).orientation.name == 'landscape'
+            ? const EdgeInsets.only(left: 40, right: 40, bottom: 8, top: 8)
+            : const EdgeInsets.all(8),
+        child: Column(
+          children: [
+            Column(
+              children: _list(context),
+            ),
+            const SizedBox(
+              height: 56,
+            ),
+          ],
         ),
       ),
     );
