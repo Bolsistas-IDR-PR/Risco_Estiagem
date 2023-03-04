@@ -2,42 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class Sobre extends StatefulWidget {
+class Sobre extends StatelessWidget {
   const Sobre({Key? key}) : super(key: key);
 
   @override
-  State<Sobre> createState() => _SobreState();
-}
-
-class _SobreState extends State<Sobre> {
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.green,
-        leading: IconButton(
-            onPressed: () {
-             Navigator.pop(context);
-            },
-            icon: const Icon(Icons.arrow_back)),
-        elevation: 0,
-        toolbarHeight: 48,
-        title: const Text("Sobre"),
-        centerTitle: true,
-        actions: [
-          Image.asset('assets/assets_appBar/icon_idr_colored.png'),
-        ],
-      ),
-      body: SingleChildScrollView(
+    return SingleChildScrollView(
+      child: Padding(
+        padding: MediaQuery.of(context).orientation.name == 'landscape'
+            ? const EdgeInsets.only(left: 40, right: 40, bottom: 8, top: 8)
+            : const EdgeInsets.all(8),
         child: Column(
           children: [
-         ListTile(
+            ListTile(
               title: Text(
                 'InfoApp',
                 style: GoogleFonts.openSans(),
               ),
               leading: const Icon(Icons.info_outline),
-              trailing: Text('Versão: 1.0', style: GoogleFonts.openSans(),),
+              trailing: Text(
+                'Versão: 1.0',
+                style: GoogleFonts.openSans(),
+              ),
             ),
             const Divider(),
             GestureDetector(
@@ -56,7 +42,10 @@ class _SobreState extends State<Sobre> {
                         fit: BoxFit.contain,
                       ),
                     ),
-                    Text('Conheça o IDR-Paraná',style: GoogleFonts.openSans(),),
+                    Text(
+                      'Conheça o IDR-Paraná',
+                      style: GoogleFonts.openSans(),
+                    ),
                   ],
                 ),
               ),
@@ -65,7 +54,6 @@ class _SobreState extends State<Sobre> {
               onTap: () {
                 openYoutube();
               },
-
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -97,7 +85,7 @@ class _SobreState extends State<Sobre> {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                 Text(
+                  Text(
                     'Atenção',
                     style: GoogleFonts.openSans(fontSize: 18),
                   ),

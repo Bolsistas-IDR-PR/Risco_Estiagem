@@ -88,58 +88,43 @@ class _MediaRegionalState extends State<MediaRegional> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.green,
-        leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(Icons.arrow_back)),
-        elevation: 0,
-        toolbarHeight: 48,
-        title: const Text("Média Regional"),
-        centerTitle: true,
-        actions: [
-          Image.asset('assets/assets_appBar/icon_idr_colored.png'),
-        ],
-      ),
-      body: ListView.builder(
-        itemCount: 10,
-        itemBuilder: (BuildContext context, int index) {
-          switch (index) {
-            case 1:
-              return buildPlots('Centro Ocidental Paranaense', ListaCidadesBrasil.centroOcidentalParanaense, index);
-            case 2:
-              return buildPlots('Centro Oriental Paranaense', ListaCidadesBrasil.centroOrientalParanaense, index);
-            case 3:
-              return buildPlots('Centro Sul Paranaense', ListaCidadesBrasil.centroSulParanaense, index);
-            case 4:
-              return buildPlots('Metropolitana de Curitiba', ListaCidadesBrasil.metropolitanaCuritiba, index);
-            case 5:
-              return buildPlots('Noroeste Paranaense', ListaCidadesBrasil.noroesteParanaense, index);
-            case 6:
-              return buildPlots('Norte Central Paranaense', ListaCidadesBrasil.norteCentralParanaense, index);
-            case 7:
-              return buildPlots('Norte Pioneiro Paranaense', ListaCidadesBrasil.nortePioneiroParanaense, index);
-            case 8:
-              return buildPlots('Oeste Paranaense', ListaCidadesBrasil.oesteParanaense, index);
-            case 9:
-              return buildPlots('Sudeste Paranaense', ListaCidadesBrasil.sedesteParanaense, index);
-            case 10:
-              return buildPlots('Sudoeste Paranaense', ListaCidadesBrasil.sedoesteParanaense, index);
-          }
-          return const SizedBox.square(
-            dimension: 2,
-          );
-        },
-      ),
+    return ListView.builder(
+      itemCount: 10,
+      itemBuilder: (BuildContext context, int index) {
+        switch (index) {
+          case 1:
+            return buildPlots('Centro Ocidental Paranaense', ListaCidadesBrasil.centroOcidentalParanaense, index);
+          case 2:
+            return buildPlots('Centro Oriental Paranaense', ListaCidadesBrasil.centroOrientalParanaense, index);
+          case 3:
+            return buildPlots('Centro Sul Paranaense', ListaCidadesBrasil.centroSulParanaense, index);
+          case 4:
+            return buildPlots('Metropolitana de Curitiba', ListaCidadesBrasil.metropolitanaCuritiba, index);
+          case 5:
+            return buildPlots('Noroeste Paranaense', ListaCidadesBrasil.noroesteParanaense, index);
+          case 6:
+            return buildPlots('Norte Central Paranaense', ListaCidadesBrasil.norteCentralParanaense, index);
+          case 7:
+            return buildPlots('Norte Pioneiro Paranaense', ListaCidadesBrasil.nortePioneiroParanaense, index);
+          case 8:
+            return buildPlots('Oeste Paranaense', ListaCidadesBrasil.oesteParanaense, index);
+          case 9:
+            return buildPlots('Sudeste Paranaense', ListaCidadesBrasil.sedesteParanaense, index);
+          case 10:
+            return buildPlots('Sudoeste Paranaense', ListaCidadesBrasil.sedoesteParanaense, index);
+        }
+        return const SizedBox.square(
+          dimension: 2,
+        );
+      },
     );
   }
 
   Padding buildPlots(String regiao, List<double> list, int idx) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: MediaQuery.of(context).orientation.name == 'landscape'
+          ? const EdgeInsets.only(left: 40, right: 40, bottom: 8, top: 8)
+          : const EdgeInsets.all(8),
       child: Column(
         children: [
           SfCartesianChart(
