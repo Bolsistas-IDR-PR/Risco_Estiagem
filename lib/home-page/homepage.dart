@@ -16,10 +16,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   LatLng _markerLocation = const LatLng(-23.52, -51.22);
   String _markerName = "Londrina";
   late GoogleMapController mapController;
+
   List<List<dynamic>> _data = [];
   late TrackballBehavior _trackballBehavior;
   late TrackballBehavior _trackballBehaviorMedia;
@@ -61,19 +63,23 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     initialization();
+
     setSharedPreference();
+
     _trackballBehavior = TrackballBehavior(
         activationMode: ActivationMode.singleTap,
         enable: true,
-        markerSettings:
-            const TrackballMarkerSettings(markerVisibility: TrackballVisibilityMode.visible, borderColor: Colors.black),
+        markerSettings: const TrackballMarkerSettings(
+            markerVisibility: TrackballVisibilityMode.visible,
+            borderColor: Colors.black),
         tooltipDisplayMode: TrackballDisplayMode.groupAllPoints);
 
     _trackballBehaviorMedia = TrackballBehavior(
         activationMode: ActivationMode.singleTap,
         enable: true,
-        markerSettings:
-            const TrackballMarkerSettings(markerVisibility: TrackballVisibilityMode.visible, borderColor: Colors.black),
+        markerSettings: const TrackballMarkerSettings(
+            markerVisibility: TrackballVisibilityMode.visible,
+            borderColor: Colors.black),
         tooltipDisplayMode: TrackballDisplayMode.groupAllPoints);
   }
 
@@ -91,7 +97,8 @@ class _HomePageState extends State<HomePage> {
 
   Future _loadCSV() async {
     final rawData = await rootBundle.loadString("assets/db/riscoestiagem.csv");
-    List<List<dynamic>> listaData = const CsvToListConverter().convert(rawData);
+    List<List<dynamic>> listaData =
+        const CsvToListConverter(eol: "\n").convert(rawData);
     setState(
       () {
         _data = listaData;
@@ -101,6 +108,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+
     return _data.isEmpty && cidadeCondition == false
         ? const Center(
             child: CircularProgressIndicator(),
@@ -139,12 +147,16 @@ class _HomePageState extends State<HomePage> {
                                       print(_textEditingController.value.composing.isValid);
                                     });
                                   } else {
+
                                     String cidadeDigitadatoUpperCase =
-                                        ListaCidadesBrasilUppercase.formatarNomeUppercase(text);
-                                    listaPosicao =
-                                        ListaCidadesBrasilUppercase.listarCidadesUpperCase(cidadeDigitadatoUpperCase);
+                                        ListaCidadesBrasilUppercase
+                                            .formatarNomeUppercase(text);
+                                    listaPosicao = ListaCidadesBrasilUppercase
+                                        .listarCidadesUpperCase(
+                                            cidadeDigitadatoUpperCase);
 
                                     listarCidades(listaPosicao);
+
                                   }
                                 },
                                 inputFormatters: <TextInputFormatter>[
@@ -177,6 +189,7 @@ class _HomePageState extends State<HomePage> {
                                   border: const OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(8.0),
+
                                     ),
                                   ),
                                   hintText: 'Ex: Londrina',
@@ -184,6 +197,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                             ),
+
                           ),
                         ],
                       )
@@ -393,10 +407,12 @@ class _HomePageState extends State<HomePage> {
                                   PlotMediaMesorregiao('1-10/dez', _mediaEstiagem[33]),
                                   PlotMediaMesorregiao('11-20/dez', _mediaEstiagem[34]),
                                   PlotMediaMesorregiao('21-31/dez', _mediaEstiagem[35]),
+
                                 ],
                                 xValueMapper: (PlotMediaMesorregiao sales, _) => sales.decendio,
                                 yValueMapper: (PlotMediaMesorregiao sales, _) => sales.risco,
                               ),
+
                             ],
                           ),
                           const Divider(),
@@ -428,6 +444,7 @@ class _HomePageState extends State<HomePage> {
                                 onMapCreated: (GoogleMapController controller) {
                                   mapController = controller;
                                 },
+
                               ),
                             ),
                           ),
@@ -445,6 +462,7 @@ class _HomePageState extends State<HomePage> {
     print(listaCidades);
     print(listaCidades.length);
     return Expanded(
+
       child: ListView.builder(
         itemCount: listaCidades.length,
         itemBuilder: (context, int index) {
@@ -472,6 +490,7 @@ class _HomePageState extends State<HomePage> {
               },
               title: Text(
                 listaCidades[index],
+
               ),
             ),
           );
@@ -488,7 +507,8 @@ class _HomePageState extends State<HomePage> {
           listaCidades.clear();
         } else {
           for (int i = 0; i < posicaoCidades.length; i++) {
-            listaCidades.add(ListaCidadesBrasil.listaCidadesBrasil[posicaoCidades[i]]);
+            listaCidades
+                .add(ListaCidadesBrasil.listaCidadesBrasil[posicaoCidades[i]]);
           }
         }
       },
@@ -515,25 +535,50 @@ class _HomePageState extends State<HomePage> {
 
             ///CONDICIONAL PARA PUXAR O MAPA REGIONAL CORRESPONDENTE À CIDADE.
             CityNames.cityNames[estacao]![2] == 'Centro Ocidental Paranaense'
-                ? _mediaEstiagem.addAll(ListaCidadesBrasil.centroOcidentalParanaense)
-                : CityNames.cityNames[estacao]![2] == 'Centro Oriental Paranaense'
-                    ? _mediaEstiagem.addAll(ListaCidadesBrasil.centroOrientalParanaense)
-                    : CityNames.cityNames[estacao]![2] == 'Centro-Sul Paranaense'
-                        ? _mediaEstiagem.addAll(ListaCidadesBrasil.centroSulParanaense)
-                        : CityNames.cityNames[estacao]![2] == 'Metropolitana de Curitiba'
-                            ? _mediaEstiagem.addAll(ListaCidadesBrasil.metropolitanaCuritiba)
-                            : CityNames.cityNames[estacao]![2] == 'Noroeste Paranaense'
-                                ? _mediaEstiagem.addAll(ListaCidadesBrasil.noroesteParanaense)
-                                : CityNames.cityNames[estacao]![2] == 'Norte Central Paranaense'
-                                    ? _mediaEstiagem.addAll(ListaCidadesBrasil.norteCentralParanaense)
-                                    : CityNames.cityNames[estacao]![2] == 'Norte Pioneiro Paranaense'
-                                        ? _mediaEstiagem.addAll(ListaCidadesBrasil.nortePioneiroParanaense)
-                                        : CityNames.cityNames[estacao]![2] == 'Oeste Paranaense'
-                                            ? _mediaEstiagem.addAll(ListaCidadesBrasil.oesteParanaense)
-                                            : CityNames.cityNames[estacao]![2] == 'Sudeste Paranaense'
-                                                ? _mediaEstiagem.addAll(ListaCidadesBrasil.sedesteParanaense)
-                                                : CityNames.cityNames[estacao]![2] == 'Sudoeste Paranaense'
-                                                    ? _mediaEstiagem.addAll(ListaCidadesBrasil.sedoesteParanaense)
+                ? _mediaEstiagem
+                    .addAll(ListaCidadesBrasil.centroOcidentalParanaense)
+                : CityNames.cityNames[estacao]![2] ==
+                        'Centro Oriental Paranaense'
+                    ? _mediaEstiagem
+                        .addAll(ListaCidadesBrasil.centroOrientalParanaense)
+                    : CityNames.cityNames[estacao]![2] ==
+                            'Centro-Sul Paranaense'
+                        ? _mediaEstiagem
+                            .addAll(ListaCidadesBrasil.centroSulParanaense)
+                        : CityNames.cityNames[estacao]![2] ==
+                                'Metropolitana de Curitiba'
+                            ? _mediaEstiagem.addAll(
+                                ListaCidadesBrasil.metropolitanaCuritiba)
+                            : CityNames.cityNames[estacao]![2] ==
+                                    'Noroeste Paranaense'
+                                ? _mediaEstiagem.addAll(
+                                    ListaCidadesBrasil.noroesteParanaense)
+                                : CityNames.cityNames[estacao]![2] ==
+                                        'Norte Central Paranaense'
+                                    ? _mediaEstiagem.addAll(ListaCidadesBrasil
+                                        .norteCentralParanaense)
+                                    : CityNames.cityNames[estacao]![2] ==
+                                            'Norte Pioneiro Paranaense'
+                                        ? _mediaEstiagem.addAll(
+                                            ListaCidadesBrasil
+                                                .nortePioneiroParanaense)
+                                        : CityNames.cityNames[estacao]![2] ==
+                                                'Oeste Paranaense'
+                                            ? _mediaEstiagem.addAll(
+                                                ListaCidadesBrasil
+                                                    .oesteParanaense)
+                                            : CityNames.cityNames[estacao]![
+                                                        2] ==
+                                                    'Sudeste Paranaense'
+                                                ? _mediaEstiagem.addAll(
+                                                    ListaCidadesBrasil
+                                                        .sedesteParanaense)
+                                                : CityNames.cityNames[estacao]![
+                                                            2] ==
+                                                        'Sudoeste Paranaense'
+                                                    ? _mediaEstiagem.addAll(
+                                                        ListaCidadesBrasil
+                                                            .sedoesteParanaense)
                                                     : _mediaEstiagem.clear();
           },
         );

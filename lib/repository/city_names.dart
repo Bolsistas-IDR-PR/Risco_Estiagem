@@ -255,7 +255,6 @@ class CityNames {
     2552040: ['Virmond','PR','Centro-Sul Paranaense',-25.37,-52.20],
     2652012: ['Vitorino','PR','Sudoeste Paranaense',-26.27,-52.80],
     2353005: ['Xambrê','PR','Noroeste Paranaense',-23.73,-53.48],
-
   };
 }
 
