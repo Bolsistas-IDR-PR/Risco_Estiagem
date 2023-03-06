@@ -144,7 +144,6 @@ class _HomePageState extends State<HomePage> {
                                     setState(() {
                                       listaCidades.clear();
                                       listaCidades.addAll(ListaCidadesBrasil.listaCidadesBrasil);
-                                      print(_textEditingController.value.composing.isValid);
                                     });
                                   } else {
 
@@ -458,9 +457,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget mostrarListaDigitando() {
-    print('ESTOU DIGITANDO');
-    print(listaCidades);
-    print(listaCidades.length);
     return Expanded(
 
       child: ListView.builder(
