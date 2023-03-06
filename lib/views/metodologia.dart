@@ -6,6 +6,7 @@ class Metodologia extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return SingleChildScrollView(
       child: Padding(
         padding: MediaQuery.of(context).orientation.name == 'landscape'
@@ -27,6 +28,7 @@ class Metodologia extends StatelessWidget {
                 ' de dados das estações alocadas em cada município paranaense.',
                 textAlign: TextAlign.justify,
                 style: GoogleFonts.openSans(fontSize: 18),
+
               ),
             ),
           ],
