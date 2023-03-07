@@ -92,7 +92,6 @@ class _MediaRegionalState extends State<MediaRegional> {
     return ListView.builder(
       itemCount: 10,
       itemBuilder: (BuildContext context, int index) {
-        print(index);
         switch (index) {
           case 0:
             return buildPlots('Centro Ocidental Paranaense', ListaCidadesBrasil.centroOcidentalParanaense, index);
