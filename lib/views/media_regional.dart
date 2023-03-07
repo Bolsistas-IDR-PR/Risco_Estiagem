@@ -135,25 +135,25 @@ class _MediaRegionalState extends State<MediaRegional> {
             onMarkerRender: (MarkerRenderArgs markerargs) {
               markerargs.color = const Color.fromRGBO(255, 255, 255, 1);
             },
-            trackballBehavior: idx == 1
+            trackballBehavior: idx == 0
                 ? _trackballBehavior1
-                : idx == 2
+                : idx == 1
                     ? _trackballBehavior2
-                    : idx == 3
+                    : idx == 2
                         ? _trackballBehavior3
-                        : idx == 4
+                        : idx ==3
                             ? _trackballBehavior4
-                            : idx == 5
+                            : idx == 4
                                 ? _trackballBehavior5
-                                : idx == 6
+                                : idx == 5
                                     ? _trackballBehavior6
-                                    : idx == 7
+                                    : idx == 6
                                         ? _trackballBehavior7
-                                        : idx == 8
+                                        : idx == 7
                                             ? _trackballBehavior8
-                                            : idx == 9
+                                            : idx == 8
                                                 ? _trackballBehavior9
-                                                : idx == 10 ? _trackballBehavior10:null,
+                                                : idx == 9 ? _trackballBehavior10:null,
             primaryXAxis: CategoryAxis(
 
               edgeLabelPlacement: EdgeLabelPlacement.shift,
