@@ -17,6 +17,7 @@ class CoreView extends StatefulWidget {
 class _CoreViewState extends State<CoreView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _currentScreen = 0;
+  //Variável _title armazena as telas do aplicativo
   final List<Widget> _screen = [
     const HomePage(),
     const Introducao(),

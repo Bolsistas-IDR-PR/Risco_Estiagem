@@ -1,6 +1,5 @@
 import 'package:csv/csv.dart';
 import 'package:estiagem_parana/repository/chart.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -9,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'dart:ui' as ui;
 import '../repository/city_names.dart';
-import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -330,13 +328,15 @@ class _HomePageState extends State<HomePage> {
                           Container(
                             margin: EdgeInsets.zero,
                             decoration: const BoxDecoration(
-                              border: Border.symmetric(horizontal:BorderSide (width: 2, color: Colors.green, style: BorderStyle.solid)),
+                              border: Border.symmetric(
+                                  horizontal: BorderSide(width: 2, color: Colors.green, style: BorderStyle.solid)),
                             ),
                             child: ExpansionTile(
                                 childrenPadding: EdgeInsets.zero,
                                 tilePadding: EdgeInsets.zero,
                                 title: Text(
-                                  'Média Regional: $_cidade',textAlign:TextAlign.center,
+                                  'Média Regional: $_cidade',
+                                  textAlign: TextAlign.center,
                                   style: const TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 children: [
@@ -487,7 +487,7 @@ class _HomePageState extends State<HomePage> {
                                 zoomGesturesEnabled: true,
                                 initialCameraPosition: CameraPosition(
                                   target: _markerLocation,
-                                  zoom: 12,
+                                  zoom: 10,
                                 ),
                                 markers: <Marker>{
                                   Marker(
