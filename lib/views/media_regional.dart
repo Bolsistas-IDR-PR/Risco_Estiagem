@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../repository/chart.dart';
 import '../repository/city_names.dart';
 
 class MediaRegional extends StatefulWidget {
@@ -91,27 +92,28 @@ class _MediaRegionalState extends State<MediaRegional> {
     return ListView.builder(
       itemCount: 10,
       itemBuilder: (BuildContext context, int index) {
+        print(index);
         switch (index) {
-          case 1:
+          case 0:
             return buildPlots('Centro Ocidental Paranaense', ListaCidadesBrasil.centroOcidentalParanaense, index);
-          case 2:
+          case 1:
             return buildPlots('Centro Oriental Paranaense', ListaCidadesBrasil.centroOrientalParanaense, index);
-          case 3:
+          case 2:
             return buildPlots('Centro Sul Paranaense', ListaCidadesBrasil.centroSulParanaense, index);
-          case 4:
+          case 3:
             return buildPlots('Metropolitana de Curitiba', ListaCidadesBrasil.metropolitanaCuritiba, index);
-          case 5:
+          case 4:
             return buildPlots('Noroeste Paranaense', ListaCidadesBrasil.noroesteParanaense, index);
-          case 6:
+          case 5:
             return buildPlots('Norte Central Paranaense', ListaCidadesBrasil.norteCentralParanaense, index);
-          case 7:
+          case 6:
             return buildPlots('Norte Pioneiro Paranaense', ListaCidadesBrasil.nortePioneiroParanaense, index);
-          case 8:
+          case 7:
             return buildPlots('Oeste Paranaense', ListaCidadesBrasil.oesteParanaense, index);
+          case 8:
+            return buildPlots('Sudeste Paranaense', ListaCidadesBrasil.sudesteParanaense, index);
           case 9:
-            return buildPlots('Sudeste Paranaense', ListaCidadesBrasil.sedesteParanaense, index);
-          case 10:
-            return buildPlots('Sudoeste Paranaense', ListaCidadesBrasil.sedoesteParanaense, index);
+            return buildPlots('Sudoeste Paranaense', ListaCidadesBrasil.sudoesteParanaense, index);
         }
         return const SizedBox.square(
           dimension: 2,
@@ -128,6 +130,7 @@ class _MediaRegionalState extends State<MediaRegional> {
       child: Column(
         children: [
           SfCartesianChart(
+
             margin: const EdgeInsets.all(0),
             onMarkerRender: (MarkerRenderArgs markerargs) {
               markerargs.color = const Color.fromRGBO(255, 255, 255, 1);
@@ -150,8 +153,9 @@ class _MediaRegionalState extends State<MediaRegional> {
                                             ? _trackballBehavior8
                                             : idx == 9
                                                 ? _trackballBehavior9
-                                                : _trackballBehavior10,
+                                                : idx == 10 ? _trackballBehavior10:null,
             primaryXAxis: CategoryAxis(
+
               edgeLabelPlacement: EdgeLabelPlacement.shift,
               interval: MediaQuery.of(context).orientation.name == 'portrait' ? 3 : 1,
               majorGridLines: const MajorGridLines(width: 0),
@@ -165,7 +169,7 @@ class _MediaRegionalState extends State<MediaRegional> {
                   text: 'Inverno',
                   textStyle: const TextStyle(color: Colors.black, fontSize: 13),
                   color: const Color.fromRGBO(101, 199, 209, 0.2),
-                  opacity: 0.5,
+                  opacity: 0.2,
                 ),
                 PlotBand(
                   horizontalTextAlignment: TextAnchor.middle,
@@ -175,7 +179,7 @@ class _MediaRegionalState extends State<MediaRegional> {
                   text: 'Verão',
                   textStyle: const TextStyle(color: Colors.black, fontSize: 13),
                   color: const Color.fromRGBO(254, 213, 2, 0.2),
-                  opacity: 0.5,
+                  opacity: 0.2,
                 ),
                 PlotBand(
                   horizontalTextAlignment: TextAnchor.middle,
@@ -185,7 +189,7 @@ class _MediaRegionalState extends State<MediaRegional> {
                   text: 'Verão',
                   textStyle: const TextStyle(color: Colors.black, fontSize: 13),
                   color: const Color.fromRGBO(254, 213, 2, 0.2),
-                  opacity: 0.5,
+                  opacity: 0.2,
                 ),
                 PlotBand(
                   isVisible: true,
@@ -194,7 +198,7 @@ class _MediaRegionalState extends State<MediaRegional> {
                   text: 'Primavera',
                   textStyle: const TextStyle(color: Colors.black, fontSize: 13),
                   color: const Color.fromRGBO(140, 198, 62, 0.2),
-                  opacity: 0.5,
+                  opacity: 0.2,
                 ),
                 PlotBand(
                   isVisible: true,
@@ -203,11 +207,13 @@ class _MediaRegionalState extends State<MediaRegional> {
                   text: 'Outono',
                   textStyle: const TextStyle(color: Colors.black, fontSize: 13),
                   color: const Color.fromRGBO(217, 112, 1, 0.2),
-                  opacity: 0.5,
+                  opacity: 0.2,
                 ),
               ],
             ),
             primaryYAxis: NumericAxis(
+              minimum: 0,
+              maximum: 70,
               labelFormat: '{value}%',
               axisLine: const AxisLine(width: 0),
               majorTickLines: const MajorTickLines(color: Colors.transparent),
@@ -217,8 +223,11 @@ class _MediaRegionalState extends State<MediaRegional> {
               position: LegendPosition.bottom,
               isResponsive: true,
             ),
-            series: <LineSeries<PlotMedia, String>>[
+            series: [
+              PlotMinAndMax.minLine,
+              PlotMinAndMax.maxLine,
               LineSeries<PlotMedia, String>(
+
                 color: Colors.deepPurpleAccent,
                 width: 3,
                 name: 'Média Estiagem (%)',

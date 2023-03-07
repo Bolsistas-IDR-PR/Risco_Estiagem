@@ -29,7 +29,7 @@ class _CoreViewState extends State<CoreView> {
     'Risco Estiagem Paraná',
     'Apresentação',
     'Metodologia',
-    'Média Regional de Estiagem',
+    'Média Regional',
     'Sobre',
     'Equipe Técnica'
   ];

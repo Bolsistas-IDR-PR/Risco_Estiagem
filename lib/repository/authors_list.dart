@@ -17,7 +17,7 @@ class Authors {
     'Bolsista na área de Inovações Tecnológicas do Instituto de Desenvolvimento Rural do Paraná.\n',
     'Agente de Ciência e Tecnologia do Instituto de Desenvolvimento Rural do Paraná.\n ',
     'Coordenador de Pesquisa na área de Fitotecnia do Instituto de Desenvolvimento Rural do Paraná.\n',
-    'Engenheiro Agrícola, Doutor em Agronomia pela Universidade Estadual de Londrina.\n',
+    'Pesquisador na área de Agrometeorologia do Instituto de Desenvolvimento Rural do Paraná.\n',
     'Bolsista na área de Inovações Tecnológicas do Instituto de Desenvolvimento Rural do Paraná.\n'
   ];
 
@@ -28,7 +28,7 @@ class Authors {
     'Graduando em Tecnologia de Banco de Dados pela Faculdade Estácio.\n',
     'Engenheiro da Computação, Mestre em Ciências da Computação pela Universidade Federal do Rio Grande do Sul (UFRS).\n',
     'Engenheiro Agrônomo, Doutor em Agronomia pela Universidade Estadual de Londrina.\n',
-    'Pesquisador na área de Agrometeorologia do Instituto de Desenvolvimento Rural do Paraná.\n',
+    'Engenheiro Agrícola, Doutor em Agronomia pela Universidade Estadual de Londrina.\n',
     'Engenheiro Eletricista, Especialista em Engenharia Industrial pela Universidade do Norte do Paraná.\n',
   ];
 
