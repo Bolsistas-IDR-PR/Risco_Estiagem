@@ -563,7 +563,7 @@ class ListaCidadesBrasil {
     8.17,
     8.23
   ];
-  static List<double> sedesteParanaense = [
+  static List<double> sudesteParanaense = [
     6.15,
     11.42,
     7.68,
@@ -602,7 +602,7 @@ class ListaCidadesBrasil {
     6.89
   ];
 
-  static List<double> sedoesteParanaense = [
+  static List<double> sudoesteParanaense = [
     9.8,
     13.65,
     7.4,
