@@ -1,0 +1,16 @@
+# flutter_native_splash-acceptance.yaml
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/splashScreen/idr_banner.png
+  branding: assets/splashScreen/idr_banner.png
+  color_dark: "#121212"
+  image_dark: assets/splashScreen/idr_banner.png
+  branding_dark: assets/splashScreen/idr_banner.png
+
+  android_12:
+    image: assets/splashScreen/idr_banner.png
+    icon_background_color: "#ffffff"
+    image_dark: assets/splashScreen/idr_banner.png
+    icon_background_color_dark: "#121212"
+
+  web: false
