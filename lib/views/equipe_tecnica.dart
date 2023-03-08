@@ -12,7 +12,7 @@ class EquipeTecnica extends StatelessWidget {
       throw 'Could not launch ${Authors.linkLattes[idx]}';
     }
   }
-
+//
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
